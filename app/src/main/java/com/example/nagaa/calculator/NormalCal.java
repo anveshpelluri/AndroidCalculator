@@ -1,5 +1,9 @@
+
+
 package com.example.nagaa.calculator;
 
+import android.annotation.TargetApi;
+import android.os.VibrationEffect;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.Button;
@@ -13,9 +17,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class NormalCal extends AppCompatActivity {
- String val=" ";
- TextView txt,txt2;
 
+    TextView txt, txt2;
+     int c[]={0,0,0,0};
+     int places[][]=new int [4][10];
+     int k[] = new int[10];
+     int l = 1;
+     String val=" ";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,223 +33,423 @@ public class NormalCal extends AppCompatActivity {
         txt2 = findViewById(R.id.textView2);
     }
 
-    public void btn1(View view){
-        val=val.concat("1");
-     txt.setText(val);
+    public void btn1(View view) {
+        btnActn("1");
+
     }
-    public void btn2(View view){
-        val=val.concat("2");
+
+    public void btn2(View view) {
+        btnActn("2");
+
+    }
+
+    public void btn3(View view) {
+        btnActn("3");
+
+    }
+
+    public void btn5(View view) {
+        btnActn("4");
+
+    }
+
+    public void btn6(View view) {
+        btnActn("5");
+
+    }
+
+    public void btn7(View view) {
+        btnActn("6");
+
+    }
+
+    public void btn9(View view) {
+        btnActn("7");
+
+    }
+
+    public void btn10(View view) {
+        btnActn("8");
+
+    }
+
+    public void btn11(View view) {
+        btnActn("9");
+    }
+
+    public void btn14(View view) {
+        btnActn("0");
+
+    }
+
+    public void btn8(View view) {
+        btnActn("/");
+    }
+
+    public void btn12(View view) {
+        btnActn("-");
+    }
+
+    public void btn13(View view) {
+        btnActn("*");
+
+    }
+
+    public void btn15(View view) {
+        btnActn("+");
+    }
+
+    public void btn16(View view) {
+        btnActn("=");
+        indexValue();
+
+
+    }
+
+    public void btn4(View view) {
+        //val = val.substring(0, val.length());
+        val="";
         txt.setText(val);
+        txt2.setText("");
     }
-    public void btn3(View vie0w){
-        val=val.concat("3");
+
+    void btnActn(String op)
+    {
+        val = val.concat(op);
         txt.setText(val);
+        VibrationEffect.createOneShot(2000,255);
     }
-    public void btn5(View view){
-        val=val.concat("4");
-        txt.setText(val);
-    }
-    public void btn6(View view){
-        val=val.concat("5");
-        txt.setText(val);
-    }
-    public void btn7(View view){
-        val=val.concat("6");
-        txt.setText(val);
-    }
-    public void btn9(View view){
-        val=val.concat("7");
-        txt.setText(val);
-    }
-    public void btn10(View view){
-        val=val.concat("8");
-        txt.setText(val);
-    }
-    public void btn11(View view){
-        val=val.concat("9");
-        txt.setText(val);
-    }
-    public void btn14(View view){
-        val=val.concat("0");
-        txt.setText(val);
-    }
-    public void btn8(View view){
-        val=val.concat("/");
-        txt.setText(val);
-    }
-    public void btn12(View view){
-        val=val.concat("-");
-        txt.setText(val);
-    }
-    public void btn13(View view){
-        val=val.concat("*");
-        txt.setText(val);
-    }
-    public void btn15(View view){
-        val=val.concat("+");
-        txt.setText(val);
-    }
-    public void btn16(View view){
-        val=val.concat("=");
-        txt.setText(val);
-        equalbtn();
-    }
-    public void btn4(View view){
-        val=val.substring(0,(val.length()-3));
-        txt.setText(val);
-    }
-    int places[][]=new int[4][10];
-    int k[]=new int[100];
-    int c[]={0,0,0,0};
-    public void equalbtn( )
-    {   StringBuffer temp=new StringBuffer(val);
-        StringBuffer temp1;
-        int a=temp.lastIndexOf("=");
-        temp1=temp.deleteCharAt(a);
-        val=temp1.toString();
-             logic();
-    }
-        void logic(){
-        int l=0;
-       for(int i=1;i<val.length();i++)
+
+        void indexValue()
        {
-           if(val.charAt(i)=='+'||val.charAt(i)=='-'||val.charAt(i)=='*'||val.charAt(i)=='/') {
-               k[l] = i;
-               l++;
-           }
-           switch (val.charAt(i)) {
-               case '+':
-                   places[0][c[0]] = i;
-                   ++c[0];
-                   break;
-               case '-':
-                   places[1][c[1]] = i;
-                   ++c[1];
-                   break;
-               case '*':
-                   places[2][c[2]] = i;
-                   ++c[2];
-                   break;
-               case '/':
-                   places[3][c[3]] = i;
-                   ++c[3];
-                   break;
-           }
-       }
-       if(places[3][0]!=0)
-            div();
-            else if (places[2][0] != 0)
-                mult();
-            else if (places[1][0] != 0)
-                subtract();
-            else if (places[0][0] != 0)
-                add();
-            else {
-                txt2.setText(val);
-            }
-    }
-    void div() {
-        int indx[] = new int[c[3]];
-        for (int i = 0; i < c[3]; i++) {
-            String s1, s2;
-            indx[i] = Arrays.binarySearch(k, places[3][i]);
-            if (indx[i] == k[0]) {
-                s2 = val.substring(k[indx[i] + 1], k[indx[i+1]]);
-                txt2.setText(s2);}
-                /*s1 = val.substring(k[0], k[indx[i]]);
-                StringBuffer temp = new StringBuffer(val);
-                double a = Double.parseDouble(s1) / Double.parseDouble(s2);
-                temp.replace(k[0], k[indx[i + 1]], Double.toString(a));
-                val = temp.toString();
-            } else {
-                s1 = val.substring(k[indx[i - 1] + 1], k[indx[i]]);
-                s2 = val.substring(k[indx[i] + 1], k[indx[i + 1]]);
-                double a = Double.parseDouble(s1) / Double.parseDouble(s2);
-                StringBuffer temp = new StringBuffer(val);
-                temp.replace(k[indx[i - 1] + 1], k[indx[i + 1]], Double.toString(a));
-                val = temp.toString();
-            }*/
+        l=1;
+        for (int i = 0; i < 4; i++)
+        {
+            places[i][0]=-1	;
+            c[i]=0;
         }
-       places[3][0]=0;
-        logic();
-    }
 
-    void mult() {
-        int indx[] = new int[c[2]];
-        for(int i=0;i<c[2];i++) {
-            String s1, s2;
-            indx[i] = Arrays.binarySearch(k, places[2][i]);
-            if (indx[i] == k[0]) {
-                s2 = val.substring(k[indx[i] + 1], k[indx[i]]);
-                s1 = val.substring(k[0], k[indx[i]]);
-                StringBuffer temp = new StringBuffer(val);
-                double a = Double.parseDouble(s1) * Double.parseDouble(s2);
-                temp.replace(k[0], k[indx[i + 1]], Double.toString(a));
-                val = temp.toString();
-            } else {
-                s1 = val.substring(k[indx[i - 1] + 1], k[indx[i]]);
-                s2 = val.substring(k[indx[i] + 1], k[indx[i + 1]]);
-                double a = Double.parseDouble(s1) * Double.parseDouble(s2);
-                StringBuffer temp = new StringBuffer(val);
-                temp.replace(k[indx[i - 1] + 1], k[indx[i + 1]], Double.toString(a));
-                val = temp.toString();
-            }
 
-            places[3][1]=0;
-            logic();
+        for (int i = 0; i < val.length (); i++)
+        {
+            k[0]=0;
+            if (val.charAt(i) == '+'||val.charAt (i) == '-'||val.charAt (i) == '*'||val.charAt (i) =='/'||val.charAt (i) =='=' )
 
-        }
-    }
-        void subtract() {
-            int indx[] = new int[c[1]];
-            for (int i = 0; i < c[3]; i++) {
-                String s1, s2;
-                indx[i] = Arrays.binarySearch(k, places[1][i]);
-                if (indx[i] == k[0]) {
-                    s2 = val.substring(k[indx[i] + 1], k[indx[i]]);
-                    s1 = val.substring(k[0], k[indx[i]]);
-                    StringBuffer temp = new StringBuffer(val);
-                    double a = Double.parseDouble(s1) - Double.parseDouble(s2);
-                    temp.replace(k[0], k[indx[i + 1]], Double.toString(a));
-                    val = temp.toString();
-                } else {
-                    s1 = val.substring(k[indx[i - 1] + 1], k[indx[i]]);
-                    s2 = val.substring(k[indx[i] + 1], k[indx[i + 1]]);
-                    double a = Double.parseDouble(s1) - Double.parseDouble(s2);
-                    StringBuffer temp = new StringBuffer(val);
-                    temp.replace(k[indx[i - 1] + 1], k[indx[i + 1]], Double.toString(a));
-                    val = temp.toString();
-                }
-            }
-
-            places[1][0]=0;
-            logic();
-        }
-    void add() {
-        int indx[] = new int[c[0]];
-        for(int i=0;i<c[3];i++){
-            String s1,s2;
-            indx[i]= Arrays.binarySearch(k ,places[0][i]);
-            if(indx[i]==k[0])
             {
-                s2=val.substring(k[indx[i]+1],k[indx[i]]);
-                s1=val.substring(k[0],k[indx[i]]);
-                StringBuffer temp=new StringBuffer(val);
-                double a=Double.parseDouble(s1)+Double.parseDouble(s2);
-                temp.replace(k[0],k[indx[i+1]],Double.toString(a));
-                val=temp.toString();
+                k[l] = i;
+                l++
+                ;
             }
-            else {
-                s1 = val.substring(k[indx[i - 1] + 1], k[indx[i]]);
-                s2 = val.substring(k[indx[i] + 1], k[indx[i + 1]]);
-                double a=Double.parseDouble(s1)+Double.parseDouble(s2);
-                StringBuffer temp=new StringBuffer(val);
-                temp.replace(k[indx[i-1]+1],k[indx[i+1]],Double.toString(a));
-                val=temp.toString();
+
+            switch (val.charAt(i)) {
+                case '+':
+                    places[0][c[0]] = i;
+                    ++c[0];
+                    break;
+                case '-':
+                    places[1][c[1]] = i;
+                    ++c[1];
+                    break;
+                case '*':
+                    places[2][c[2]] = i;
+                    ++c[2];
+                    break;
+                case '/':
+                    places[3][c[3]] = i;
+                    ++c[3];
+                    break;
+            }
+        }
+
+
+        if(places[3][0]!=-1)
+            div();
+        else if (places[2][0] != -1)
+            mult();
+        else if (places[0][0] != -1)
+            add();
+        else if(places[1][0]==0&&l<=3) {
+            val = val.substring(0, val.length() - 1);
+            txt2.setText(val);
+        }
+        else if (places[1][0] != -1){
+
+            sub();
+        }
+        else {
+            val = val.substring(0, val.length() - 1);
+            txt2.setText(val);
+        }
+    }
+
+     void div()
+    {
+        for (int i = 0; i < val.length (); i++)
+
+
+        {
+
+
+            if (val.charAt (i) == '/')
+
+
+            {
+                int indx = arraySearch (k, i);
+                double arr[] = logic (i, indx);
+                double divResult=0;
+                try {
+                     divResult = arr[0]/arr[1];
+                }
+                catch(Exception e)
+                {
+                    String s="Math Error";
+                    txt2.setText(s);
+                }
+                StringBuilder temp = new StringBuilder (val);
+                if(indx==1)
+                {
+                    temp.delete (k[indx - 1], k[indx + 1]);
+                    temp.insert (k[indx - 1] , Double.toString (divResult));
+                }
+
+                else{
+                    temp.delete (k[indx - 1]+1, k[indx + 1]);
+                    temp.insert (k[indx - 1]+1 , Double.toString (divResult));
+                    }
+                val = temp.toString ();
+                indexValue();
+            }
+        }
+    }
+    void sub()
+    {
+        for (int i = 0; i < val.length (); i++)
+        {
+            if (val.charAt (i) == '-')
+            {
+                int indx = arraySearch (k, i);
+                double arr[] = subLogic (i, indx);
+                double subResult = arr[0]-arr[1];
+                StringBuilder temp = new StringBuilder (val);
+                if(i==0){
+                    temp.delete (0, k[indx + 2]);
+                    temp.insert (k[indx-1], Double.toString (subResult));
+                }
+                else if(indx==1)
+                {
+                    temp.delete (k[indx - 1], k[indx + 1]);
+                    temp.insert (k[indx - 1] , Double.toString (subResult));
+                }
+                else{
+                    temp.delete (k[indx - 1]+1, k[indx + 1]);
+                    temp.insert (k[indx - 1]+1 , Double.toString (subResult));
+                    }
+                val = temp.toString ();
+                indexValue();
+            }
+
+
+        }
+    }
+     void add()
+    {
+        for (int i = 0; i < val.length (); i++)
+        {
+            if (val.charAt (i) == '+')
+            {
+
+                int indx = arraySearch (k, i);
+                double arr[] = logic (i, indx);
+                double addResult;
+                if(val.charAt(k[indx-1])=='-')
+                    addResult = arr[1] -arr[0];
+
+                else
+                    addResult = arr[1] +arr[0];
+                StringBuilder temp = new StringBuilder (val);
+
+                if(indx==1)
+                {
+                    temp.delete (k[indx - 1], k[indx + 1]);
+                    temp.insert (k[indx - 1] , Double.toString (addResult));
+
+                }
+
+                else{
+                    temp.delete (k[indx - 1], k[indx + 1]);
+
+                    if(Double.toString (addResult).charAt(0)=='-')
+
+                        temp.insert (k[indx - 1] , Double.toString (addResult));
+
+
+                    else
+                        temp.insert (k[indx - 1] ,"+"+Double.toString (addResult));
+                }
+                val= temp.toString ();
+
+
+                indexValue();
+
+            }
+
+
+        }
+
+    }
+     void mult()
+    {
+        for (int i = 0; i < val.length (); i++)
+
+
+        {
+
+
+
+            if (val.charAt (i) == '*')
+
+
+            {
+
+
+                int indx = arraySearch (k, i);
+
+
+                double arr[] = logic (i, indx);
+
+
+                double multResult = arr[0] * arr[1];
+
+
+                StringBuilder temp = new StringBuilder (val);
+
+                if(indx==1)
+                {
+                    temp.delete (k[indx - 1], k[indx + 1]);
+
+                    temp.insert (k[indx - 1] , Double.toString (multResult));
+
+                }
+
+                else{
+                    temp.delete (k[indx - 1]+1, k[indx + 1]);
+                    temp.insert (k[indx - 1]+1 , Double.toString (multResult));
+
+                }
+                val = temp.toString ();
+                indexValue();
             }
 
         }
-        places[3][0]=0;
-        logic();
+    }
+
+     double[] subLogic (int i, int indx)
+
+
+    {
+
+
+        String s1, s2;
+
+
+
+        if (i == 0)
+
+        {
+
+
+            s1 = val.substring (0, k[indx+1]);
+
+
+            s2 = val.substring (k[indx+1] + 1, k[indx + 2]);
+
+
+        }
+
+
+        else if(indx==k[l])
+
+
+        {
+
+
+            s1 = val.substring (k[indx - 1], i );
+
+
+            s2 = val.substring (k[indx] + 1, k[l]);
+
+
+        }
+
+        else
+
+
+        {
+
+
+            s1 = val.substring (k[indx - 1], i);
+
+
+            s2 = val.substring (k[indx] + 1, k[indx + 1]);
+
+
+        }
+
+
+        double afterParse[] ={ Double.parseDouble (s1), Double.parseDouble (s2) };
+
+
+        return afterParse;
+
+
+    }
+
+     double[] logic (int i, int indx)
+
+
+    {
+        String s1, s2;
+        if (indx == 1)
+
+        {
+            s1 = val.substring (0, i);
+            s2 = val.substring (k[indx] + 1, k[indx + 1]);
+        }
+        else if(indx==k[l])
+        {
+            s1 = val.substring (k[indx - 1], i );
+            s2 = val.substring (k[indx] + 1, k[l]);
+        }
+
+        else
+        {
+            s1 = val.substring (k[indx - 1]+1, i);
+            s2 = val.substring (k[indx] + 1, k[indx + 1]);
+        }
+
+        double afterParse[]=new double[2];
+        try {
+            afterParse[0] =Double.parseDouble(s1);
+            afterParse[1]=Double.parseDouble(s2);
+
+        }
+        catch(Exception ob){
+            String s="Illegal Expression";
+            txt2.setText(s);
+        }
+        return afterParse;
+    }
+
+
+     int arraySearch(int k[],int key)
+    {
+        int in=-1;
+        for(int i=0;i<l;i++)
+        {
+            if(k[i]==key)
+                in=i;
+        }
+        return in;
     }
 }
+
